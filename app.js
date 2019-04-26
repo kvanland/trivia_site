@@ -87,6 +87,10 @@ io.on('connection', function (socket) {
         io.emit('incomingQuestion', questions[questionsPlace]);
     });
 
+    socket.on('revealAnswer', function() {
+        io.emit('incomingAnswer', questions[questionsPlace]);
+    })
+
     socket.on('leaveGame', function (name) {
         delete players[name];
         delete buzzers[name];

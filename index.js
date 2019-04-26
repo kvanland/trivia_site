@@ -60,17 +60,20 @@ $(function () {
         }
     });
 
-    socket.on('changeScore', function (name, score, increased) {
+    socket.on('changeScore', function (username, score, increased) {
         rows.forEach(function (row) {
-            if ($(row).find('.username-row').text() === name) {
+            if ($(row).find('.username-row').text() === username) {
                 $(row).find('.score').html(score);
             }
         });
+        if(username == name){
+            $('#score').html('Score: ' + score);
+        }
         if(!hosting){
             if(increased){
-                show_alert(name + ' got a point.', 3000, $('#join-alert'), priorities.INFO);
+                show_alert(username + ' got a point.', 3000, $('#join-alert'), priorities.INFO);
             } else{
-                show_alert(name + ' lost a point.', 3000, $('#join-alert'), priorities.INFO);
+                show_alert(username + ' lost a point.', 3000, $('#join-alert'), priorities.INFO);
             }
         }
         
@@ -79,8 +82,8 @@ $(function () {
     socket.on('updateBuzzers', function (buzzers) {
         rows.forEach(function (row) {
             var place = $(row).find('.buzz-place');
-            var name = $(row).find('.username-row').text();
-            $(place).html(buzzers[name]);
+            var username = $(row).find('.username-row').text();
+            $(place).html(buzzers[username]);
         });
     });
 
@@ -89,7 +92,7 @@ $(function () {
             $('#current-question-host').html(question['q']);
             $('#current-answer-host').html(question['a']);
         } else {
-            $('#current-quesiton').html('Hidden by Host');
+            $('#current-question').html('Hidden by Host');
         }
     });
 
@@ -102,13 +105,22 @@ $(function () {
         }
     });
 
+    socket.on('incomingAnswer', function (question) {
+        if (hosting) {
+            show_alert('Answer Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
+        } else {
+            show_alert('Answer Revealed', 2500, $('#join-alert'), priorities.INFO);
+            $('#current-answer').html(question['a']);
+        }
+    });
+
     socket.on('clearBuzzers', function () {
         rows.forEach(function (row) {
             $(row).find('.buzz-place').html(0);
         });
         show_alert('Buzzers have been cleared', 2500, $('#host-alert'), priorities.SUCCESS);
         show_alert('Buzzers have been cleared', 2500, $('#join-alert'), priorities.INFO);
-        $('#buzz-btn').removeClass('btn-danger').addClass('btn-light');
+        $('#buzz-btn').addClass('btn-danger').removeClass('btn-light');
     });
 
     socket.on('gameDeleted', function (name) {
@@ -142,7 +154,9 @@ $(function () {
         name = $('#username-input').val().trim();
         if (name === '') {
             show_alert('Invalid username', 5000, $('#login-alert'), priorities.WARNING);
-        } else {
+        } else if(name.length > 14){
+            show_alert('Username must be less than 14 characters long', 5000, $('#login-alert'), priorities.WARNING);
+        }else {
             name = $('#username-input').val();
             socket.emit('host', name);
         }
@@ -153,6 +167,8 @@ $(function () {
         name = $('#username-input').val().trim();
         if (name === '') {
             show_alert('Invalid username', 5000, $('#login-alert'), priorities.WARNING);
+        } else if(name.length > 14){
+            show_alert('Username must be less than 14 characters long', 5000, $('#login-alert'), priorities.WARNING);
         } else {
             socket.emit('join', name);
         }
@@ -163,8 +179,12 @@ $(function () {
         socket.emit('nextQuestion');
     });
 
-    $('#reveal-btn').click(function (e) {
+    $('#reveal-question-btn').click(function (e) {
         socket.emit('revealQuestion');
+    })
+
+    $('#reveal-answer-btn').click(function (e){
+        socket.emit('revealAnswer');
     })
 
     $('#buzz-btn').click(function (e) {
