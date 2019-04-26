@@ -4,6 +4,7 @@
     "description": "Site to hold trivia night",
     "dependencies": {
         "express": "^4.16.4",
+        "request": "^2.88.0",
         "socket.io": "^2.2.0"
     }
 }
