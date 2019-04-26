@@ -9,7 +9,7 @@ var players = {};
 var buzzers = {};
 var buzzerPlace = 0;
 var questions = [];
-var questionsPlace = 0;
+var questionsPlace = -1;
 
 // Allows the server to serve static files such as index.js
 app.use(express.static(__dirname));
@@ -31,7 +31,7 @@ io.on('connection', function (socket) {
                 if (!error && response.statusCode == 200) {
                     questions = JSON.parse(body);
                     processQuestions();
-                    socket.emit('nextQuestion', questions[questionsPlace++]);
+                    socket.emit('nextQuestion', questions[++questionsPlace]);
                 }
             });
 
@@ -52,13 +52,13 @@ io.on('connection', function (socket) {
 
     socket.on('incrementScore', function (name) {
         players[name] = players[name] + 1;
-        io.emit('changeScore', name, players[name]);
+        io.emit('changeScore', name, players[name], true);
 
     });
 
     socket.on('decrementScore', function (name) {
         players[name] -= 1;
-        io.emit('changeScore', name, players[name]);
+        io.emit('changeScore', name, players[name], false);
     });
 
     socket.on('buzz-in', function (name) {
@@ -76,11 +76,21 @@ io.on('connection', function (socket) {
     });
 
     socket.on('nextQuestion', function () {
-        socket.emit('nextQuestion', questions[questionsPlace++]);
-        if (questionsPlace == 100) {
-            quesionsPlace = 0;
+        io.emit('nextQuestion', questions[++questionsPlace]);
+        if (questionsPlace == 99) {
+            quesionsPlace = -1;
             fetchQuestions();
         }
+    });
+
+    socket.on('revealQuestion', function () {
+        io.emit('incomingQuestion', questions[questionsPlace]);
+    });
+
+    socket.on('leaveGame', function (name) {
+        delete players[name];
+        delete buzzers[name];
+        io.emit('removePlayer', name);
     });
 
     socket.on('deleteGame', function () {
