@@ -97,6 +97,7 @@ $(function () {
         if (hosting) {
             show_alert('Question Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
         } else {
+            show_alert('Question Revealed', 2500, $('#join-alert'), priorities.INFO);
             $('#current-question').html(question['q']);
         }
     });
@@ -107,6 +108,7 @@ $(function () {
         });
         show_alert('Buzzers have been cleared', 2500, $('#host-alert'), priorities.SUCCESS);
         show_alert('Buzzers have been cleared', 2500, $('#join-alert'), priorities.INFO);
+        $('#buzz-btn').removeClass('btn-danger').addClass('btn-light');
     });
 
     socket.on('gameDeleted', function (name) {
@@ -169,6 +171,7 @@ $(function () {
         var username = $('#username').html();
         username = username.substr(1);
         socket.emit('buzz-in', username);
+        $('#buzz-btn').removeClass('btn-danger').addClass('btn-light');
     });
 
     $('#reset-buzz-btn').click(function (e) {
