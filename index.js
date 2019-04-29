@@ -15,7 +15,7 @@ $(function () {
         'LIGHT': 6,
         'DARK': 7
     }
-
+    
     /**
      * Function in response to a request to host a game. Will either permit hosting and set up necessary view and data or deny and notify user.
      * @param {boolean} allowed - A boolean sent by the server indicating permission to host a game
@@ -151,7 +151,7 @@ $(function () {
             show_alert('Answer Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
         } else {
             show_alert('Answer Revealed', 2500, $('#join-alert'), priorities.INFO);
-            $('#current-answer').html(question);
+            $('#current-answer').html(answer);
         }
     });
 
@@ -217,6 +217,9 @@ $(function () {
         return false;
     });
 
+    /** 
+     * Function that sends a request to the server for a user to join a game
+     */
     $('#join-btn').click(function (e) {
         name = $('#username-input').val().trim();
         if (name === '') {
@@ -229,18 +232,30 @@ $(function () {
         return false;
     });
 
+    /**
+     * Function that sends a request to the server for the next question 
+     */
     $('#next-btn').click(function (e) {
         socket.emit('nextQuestion');
     });
 
+    /**
+     * Function that sends a request to the server to reveal the current question to all players
+     */
     $('#reveal-question-btn').click(function (e) {
         socket.emit('revealQuestion');
     })
 
+    /**
+     * Function that sends a request to the server to reveal the answer to the current question to all players
+     */
     $('#reveal-answer-btn').click(function (e) {
         socket.emit('revealAnswer');
     })
 
+    /**
+     * Function that sends a buzz in to the server
+     */
     $('#buzz-btn').click(function (e) {
         var username = $('#username').html();
         username = username.substr(1);
@@ -248,24 +263,39 @@ $(function () {
         $('#buzz-btn').removeClass('btn-danger').addClass('btn-light');
     });
 
+    /**
+     * Function that sends a request to the server to reset the buzz ins
+     */
     $('#reset-buzz-btn').click(function (e) {
         socket.emit('resetBuzzIn');
     });
 
+    /**
+     * Function that sends a request to the server to leave the current game
+     */
     $('#leave-btn').click(function (e) {
         socket.emit('leaveGame', $('#username-input').val());
     });
 
+    /**
+     * Function that sends a request to the server to end the current game
+     */
     $('#end-game-btn').click(function (e) {
         socket.emit('deleteGame');
     });
 
+    /**
+     * Binds function to +1 buttons that tells server to increase a player's score
+     */
     $('body').on('click', '.plus-btn', function () {
         var username = $(this).closest('tr').find('.username-row').text();
         socket.emit('incrementScore', username);
         return false;
     });
 
+    /**
+     * Binds function to the -1 buttons that tells the server to decrease a player's score
+     */
     $('body').on('click', '.minus-btn', function () {
         var username = $(this).closest('tr').find('.username-row').text();
         socket.emit('decrementScore', username);

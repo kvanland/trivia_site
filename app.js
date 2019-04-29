@@ -27,7 +27,7 @@ io.on('connection', function (socket) {
             fetchQuestions();
             socket.emit('host', true);
             const request = require('request');
-            request('http://jservice.io/api/random?count=100', function (error, response, body) {
+            request('http://jservice.io/api/random?count=20', function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     questions = JSON.parse(body);
                     processQuestions();
@@ -77,7 +77,7 @@ io.on('connection', function (socket) {
 
     socket.on('nextQuestion', function () {
         io.emit('nextQuestion', questions[++questionsPlace]);
-        if (questionsPlace == 99) {
+        if (questionsPlace == 19) {
             quesionsPlace = -1;
             fetchQuestions();
         }
@@ -105,7 +105,7 @@ io.on('connection', function (socket) {
 
 function fetchQuestions() {
     const request = require('request');
-    request('http://jservice.io/api/random?count=100', function (error, response, body) {
+    request('http://jservice.io/api/random?count=20', function (error, response, body) {
         if (!error && response.statusCode == 200) {
             questions = JSON.parse(body);
             processQuestions();
