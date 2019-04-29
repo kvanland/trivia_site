@@ -116,7 +116,7 @@ function fetchQuestions() {
 function processQuestions() {
     processedQuestions = [];
     questions.forEach(function (q) {
-        var question = q['category']['title'] + '<br>:' + q['question'];
+        var question = q['category']['title'] + ':<br>' + q['question'];
         var answer = q['answer'];
         processedQuestions.push({ q: question, a: answer });
     });
