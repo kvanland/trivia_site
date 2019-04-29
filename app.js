@@ -84,11 +84,11 @@ io.on('connection', function (socket) {
     });
 
     socket.on('revealQuestion', function () {
-        io.emit('incomingQuestion', questions[questionsPlace]);
+        io.emit('incomingQuestion', questions[questionsPlace]['q']);
     });
 
     socket.on('revealAnswer', function() {
-        io.emit('incomingAnswer', questions[questionsPlace]);
+        io.emit('incomingAnswer', questions[questionsPlace]['a']);
     })
 
     socket.on('leaveGame', function (name) {
@@ -116,7 +116,7 @@ function fetchQuestions() {
 function processQuestions() {
     processedQuestions = [];
     questions.forEach(function (q) {
-        var question = q['category']['title'] + ': ' + q['question'];
+        var question = q['category']['title'] + '<br>:' + q['question'];
         var answer = q['answer'];
         processedQuestions.push({ q: question, a: answer });
     });

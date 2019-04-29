@@ -117,6 +117,9 @@ $(function () {
      * @param {object} question - object that contains the question and corresponding answer
      */
     socket.on('nextQuestion', function (question) {
+        rows.forEach(function (row) {
+            $(row).find('.buzz-place').html('');
+        });
         if (hosting) {
             $('#current-question-host').html(question['q']);
             $('#current-answer-host').html(question['a']);
@@ -126,24 +129,35 @@ $(function () {
         }
     });
 
+    /**
+     * Function in response to the host revealing the current question. Will update the player game views to show the current question
+     * @param {string} question - The current question
+     */
     socket.on('incomingQuestion', function (question) {
         if (hosting) {
             show_alert('Question Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
         } else {
             show_alert('Question Revealed', 2500, $('#join-alert'), priorities.INFO);
-            $('#current-question').html(question['q']);
+            $('#current-question').html(question);
         }
     });
 
-    socket.on('incomingAnswer', function (question) {
+    /**
+     * Function in response to the host revealing the answer to the current question. Will update the player game views to show the answer.
+     * @param {string} answer - The answer to the current question
+     */
+    socket.on('incomingAnswer', function (answer) {
         if (hosting) {
             show_alert('Answer Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
         } else {
             show_alert('Answer Revealed', 2500, $('#join-alert'), priorities.INFO);
-            $('#current-answer').html(question['a']);
+            $('#current-answer').html(question);
         }
     });
 
+    /**
+     * Function in response to the host clearing the buzzers for the game. Will update the buzz in places on everyone's game view.
+     */
     socket.on('clearBuzzers', function () {
         rows.forEach(function (row) {
             $(row).find('.buzz-place').html('');
@@ -153,11 +167,18 @@ $(function () {
         $('#buzz-btn').addClass('btn-danger').removeClass('btn-light');
     });
 
-    socket.on('gameDeleted', function (name) {
+    /**
+     * Function in response to the host of a game ending the game/leaving. Will reset every player's view as well as the host. 
+     */
+    socket.on('gameDeleted', function () {
         resetGame();
         show_alert('Game has ended', 5000, $('#login-alert'), priorities.INFO);
     });
 
+    /**
+     * Function in response to a player leaving a game. Will notify members of the game and reset the player's gameview.
+     * @param {string} username - Name of the player who left the game
+     */
     socket.on('removePlayer', function (username) {
         if (username === name) {
             resetGame();
@@ -180,6 +201,9 @@ $(function () {
         }
     })
 
+    /**
+     * Function that sends request to the server for a user to host a game
+     */
     $('#host-btn').click(function (e) {
         name = $('#username-input').val().trim();
         if (name === '') {
@@ -288,6 +312,7 @@ $(function () {
         $('#player-table > tbody').html('');
         $('#current-question-host').html('');
         $('#current-answer-host').html('');
+        $('#score').html('Score: 0');
         $('#current-question').html('Hidden by Host');
 
     }
