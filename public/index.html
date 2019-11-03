@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trivia Bois</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="application/javascript" src="/index.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<body>
+    <div style="height: 85vh" class="block">
+        <div id="init-container" class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="display-1 text-center">Trivia</h1>
+                </div>
+            </div>
+            <div id="login-alert" class="alert alert-dismissible fade" role="alert">
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <button id="host-btn" type="button" class="btn btn-primary btn-block btn-lg">Host</button>
+                </div>
+                <div class="col-4">
+                    <button id="join-btn" type="button" class="btn btn-primary btn-block btn-lg">Join</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 15vh" class="block">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="display-4 text-center">How To Play</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div style="text-align:center;">
+                        <a href="#how-to-play-container" style="color:black">
+                            <i style="font-size: 50px;" class="material-icons">
+                                keyboard_arrow_down
+                            </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div id="how-to-play-container" class="container">
+            <div class="row">
+                <h4 class="display-4">Hosting</h4>
+            </div>
+            <div class="row">
+                <ol class="h4">
+                    <li>
+                        <h4 class="h4">
+                            You'll be given a 5 digit game code at the top of the page. Share it with everyone who wants
+                            to play!
+                        </h4>
+                        <h5 class="h5"> Example: </h5>
+                        <h4 class="display-4"> Game Code: 12345 </h4>
+                    </li>
+                    <li>
+                        <h4 class="h4">
+                            Once players have joined you'll see them in the table with their name, score, buzz-in order,
+                            and buttons to increase or decrease their scores.
+                        </h4>
+                        <h5 class="h5"> Example: </h5>
+                        <div class="table-responsive">
+                            <table id="host-table" class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Score</th>
+                                        <th scope="col">Buzz #</th>
+                                        <th scope="col">Correct?</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Piplup</td>
+                                        <td id="score-example">9</td>
+                                        <td>1</td>
+                                        <td><button id="plus-btn" class="btn btn-primary plus-btn"
+                                                type="button">+1</button><button id="minus-btn"
+                                                class="btn btn-danger minus-btn" type="button">-1</button></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <h4 class="h4">
+                            You'll have 4 buttons on the bottom of the screen. The first is to reveal the question to
+                            the people are playing. The second is to reveal the answer to the question. The third is to
+                            request a new question from the game. The fourth and last button resets the buzz ins from
+                            the players.
+                        </h4>
+                    </li>
+                </ol>
+            </div>
+            <div class="row">
+                <h4 class="display-4">Playing</h4>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD09OTv_2e-EicwYaGUKsRbiFDoqgICP3Y",
+            authDomain: "trivia-site-9fa7d.firebaseapp.com",
+            databaseURL: "https://trivia-site-9fa7d.firebaseio.com",
+            projectId: "trivia-site-9fa7d",
+            storageBucket: "trivia-site-9fa7d.appspot.com",
+            messagingSenderId: "680602350619",
+            appId: "1:680602350619:web:e29abb8ba2bda71b7cf4be",
+            measurementId: "G-SZ417CRZ1N"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+
+</body>
+
+</html>

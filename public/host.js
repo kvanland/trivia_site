@@ -1,6 +1,7 @@
 $(function () {
     var code = -1;
     var rows = [];
+    // eslint-disable-next-line no-undef
     var socket = io('/host');
 
     socket.emit('create game');
@@ -13,13 +14,6 @@ $(function () {
         code = gameCode;
         $('#game-code').html("Game Code: " + code);
         show_alert('Successfully created the game!', 2500, $('#host-alert'), priorities.SUCCESS);
-    });
-
-    /**
-     * Function in response to the host of a game ending the game/leaving. Will reset every player's view as well as the host. 
-     */
-    socket.on('gameDeleted', function () {
-        window.location.href = ('/');
     });
 
     /**
@@ -83,9 +77,9 @@ $(function () {
     socket.on('updateBuzzers', function (buzzers) {
         rows.forEach(function (row) {
             var username = $(row).find('.username-row').text();
-            if (username in buzzers) {
+            if (username in buzzers['players']) {
                 var place = $(row).find('.buzz-place');
-                $(place).html(buzzers[username]);
+                $(place).html(buzzers['players'][username]);
             }
         });
         show_alert('BUZZ', 1000, $('#host-alert'), priorities.DANGER);
@@ -144,7 +138,7 @@ $(function () {
     /**
      * Function that sends a request to the server for the next question 
      */
-    $('#next-btn').click(function (e) {
+    $('#next-btn').click(function () {
         socket.emit('nextQuestion', code);
         socket.emit('resetBuzzIn', code);
     });
@@ -152,29 +146,95 @@ $(function () {
     /**
      * Function that sends a request to the server to reveal the current question to all players
      */
-    $('#reveal-question-btn').click(function (e) {
-        socket.emit('revealQuestion', code);
+    $('#reveal-question-btn').click(function () {
+        socket.emit('revealQuestion', 
+        {
+            code: code,
+            question: $('#current-question').html()
+        });
     });
 
     /**
      * Function that sends a request to the server to reveal the answer to the current question to all players
      */
-    $('#reveal-answer-btn').click(function (e) {
-        socket.emit('revealAnswer', code);
+    $('#reveal-answer-btn').click(function () {
+        socket.emit('revealAnswer', 
+        {
+            code : code,
+            answer: $('#current-answer').html()
+        });
     });
 
     /**
      * Function that sends a request to the server to reset the buzz ins
      */
-    $('#reset-buzz-btn').click(function (e) {
+    $('#reset-buzz-btn').click(function () {
         socket.emit('resetBuzzIn', code);
     });
 
     /**
      * Function that sends a request to the server to end the current game
      */
-    $('#end-game-btn').click(function (e) {
-        socket.emit('deleteGame', code);
+    $('#end-game-btn').click(function () {
+        window.location.href = ('/');
     });
 
 });
+
+
+let priorities = {
+    'PRIMARY': 0,
+    'SECONDARY': 1,
+    'SUCCESS': 2,
+    'DANGER': 3,
+    'WARNING': 4,
+    'INFO': 5,
+    'LIGHT': 6,
+    'DARK': 7
+}
+
+/**
+     * Shows an alert for a specified amount of time
+     * @param {string} message - The message to show in the alert box
+     * @param {number} time - The time before hiding the alert
+     * @param {object} element - Alert element passed into function
+     * @param {number} priorityLevel - Level of priority to assign to alert
+     */
+function show_alert(message, time, element, priorityLevel) {
+    switch (priorityLevel) {
+        case priorities.PRIMARY:
+            $(element).html(message);
+            $(element).addClass('show alert-primary');
+            setTimeout(function () { $(element).removeClass('show alert-primary') }, time);
+            break;
+        case priorities.SECONDARY:
+            $(element).html(message);
+            $(element).addClass('show alert-secondary');
+            setTimeout(function () { $(element).removeClass('show alert-secondary') }, time);
+            break;
+        case priorities.SUCCESS:
+            $(element).html(message);
+            $(element).addClass('show alert-success');
+            setTimeout(function () { $(element).removeClass('show alert-success') }, time);
+            break;
+        case priorities.DANGER:
+            $(element).html(message);
+            $(element).addClass('show alert-danger');
+            setTimeout(function () { $(element).removeClass('show alert-danger') }, time);
+            break;
+        case priorities.WARNING:
+            $(element).html(message);
+            $(element).addClass('show alert-warning');
+            setTimeout(function () { $(element).removeClass('show alert-warning') }, time);
+            break;
+        case priorities.INFO:
+            $(element).html(message);
+            $(element).addClass('show alert-info');
+            setTimeout(function () { $(element).removeClass('show alert-info') }, time);
+            break;
+        case priorities.DARK:
+            $(element).html(message);
+            $(element).addClass('show alert-dark');
+            setTimeout(function () { $(element).removeClass('show alert-dark') }, time);
+    }
+}

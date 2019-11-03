@@ -1,4 +1,5 @@
 $(function () {
+    // eslint-disable-next-line no-undef
     var socket = io('/join');
     var rows = []
     var code = -1;
@@ -40,7 +41,7 @@ $(function () {
      * Function in response to the server sending in a new question. Will display new question and answer to host and reset questiona and answer views for players.
      * @param {object} question - object that contains the question and corresponding answer
      */
-    socket.on('nextQuestion', function (question) {
+    socket.on('nextQuestion', function () {
         rows.forEach(function (row) {
             $(row).find('.buzz-place').html('');
         });
@@ -87,9 +88,9 @@ $(function () {
     socket.on('updateBuzzers', function (buzzers) {
         rows.forEach(function (row) {
             var username = $(row).find('.username-row').text();
-            if (username in buzzers) {
+            if (username in buzzers['players']) {
                 var place = $(row).find('.buzz-place');
-                $(place).html(buzzers[username]);
+                $(place).html(buzzers['players'][username]);
             }
         });
     });
@@ -163,8 +164,6 @@ $(function () {
             show_alert('The username must be less than 14 characters long', 2500, $('#init-alert'), priorities.WARNING);
         } else if (username == '') {
             show_alert('The username must be filled out', 2500, $('#init-alert'), priorities.WARNING);
-        } else if (!$.isNumeric(gameCode) || gameCode < 10000 || gameCode > 99999) {
-            show_alert('Invalid game code please check again', 2500, $('#init-alert'), priorities.WARNING);
         } else {
             socket.emit('join', {
                 'username': username,
@@ -176,7 +175,7 @@ $(function () {
     /**
      * Function that sends a buzz in to the server
      */
-    $('#buzz-btn').click(function (e) {
+    $('#buzz-btn').click(function () {
         socket.emit('buzz-in', {
             'username': username,
             'code': code
@@ -187,11 +186,8 @@ $(function () {
     /**
      * Function that sends a request to the server to leave the current game
      */
-    $('#leave-btn').click(function (e) {
-        socket.emit('leave-game', {
-            'username': username,
-            'code': code
-        });
+    $('#leave-btn').click(function () {
+        window.location.href = ('/');
     });
 
     /**
@@ -210,3 +206,60 @@ $(function () {
 
 
 });
+
+let priorities = {
+    'PRIMARY': 0,
+    'SECONDARY': 1,
+    'SUCCESS': 2,
+    'DANGER': 3,
+    'WARNING': 4,
+    'INFO': 5,
+    'LIGHT': 6,
+    'DARK': 7
+}
+
+/**
+     * Shows an alert for a specified amount of time
+     * @param {string} message - The message to show in the alert box
+     * @param {number} time - The time before hiding the alert
+     * @param {object} element - Alert element passed into function
+     * @param {number} priorityLevel - Level of priority to assign to alert
+     */
+function show_alert(message, time, element, priorityLevel) {
+    switch (priorityLevel) {
+        case priorities.PRIMARY:
+            $(element).html(message);
+            $(element).addClass('show alert-primary');
+            setTimeout(function () { $(element).removeClass('show alert-primary') }, time);
+            break;
+        case priorities.SECONDARY:
+            $(element).html(message);
+            $(element).addClass('show alert-secondary');
+            setTimeout(function () { $(element).removeClass('show alert-secondary') }, time);
+            break;
+        case priorities.SUCCESS:
+            $(element).html(message);
+            $(element).addClass('show alert-success');
+            setTimeout(function () { $(element).removeClass('show alert-success') }, time);
+            break;
+        case priorities.DANGER:
+            $(element).html(message);
+            $(element).addClass('show alert-danger');
+            setTimeout(function () { $(element).removeClass('show alert-danger') }, time);
+            break;
+        case priorities.WARNING:
+            $(element).html(message);
+            $(element).addClass('show alert-warning');
+            setTimeout(function () { $(element).removeClass('show alert-warning') }, time);
+            break;
+        case priorities.INFO:
+            $(element).html(message);
+            $(element).addClass('show alert-info');
+            setTimeout(function () { $(element).removeClass('show alert-info') }, time);
+            break;
+        case priorities.DARK:
+            $(element).html(message);
+            $(element).addClass('show alert-dark');
+            setTimeout(function () { $(element).removeClass('show alert-dark') }, time);
+    }
+}

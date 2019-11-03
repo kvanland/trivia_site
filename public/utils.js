@@ -17,7 +17,7 @@ let priorities = {
      * @param {object} element - Alert element passed into function
      * @param {number} priorityLevel - Level of priority to assign to alert
      */
-function show_alert(message, time, element, priorityLevel) {
+export function show_alert(message, time, element, priorityLevel) {
     switch (priorityLevel) {
         case priorities.PRIMARY:
             $(element).html(message);

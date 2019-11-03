@@ -16,7 +16,6 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script type="application/javascript" src="utils.js"></script>
 <script type="application/javascript" src="host.js"></script>
 
 <body>
@@ -107,6 +106,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD09OTv_2e-EicwYaGUKsRbiFDoqgICP3Y",
+            authDomain: "trivia-site-9fa7d.firebaseapp.com",
+            databaseURL: "https://trivia-site-9fa7d.firebaseio.com",
+            projectId: "trivia-site-9fa7d",
+            storageBucket: "trivia-site-9fa7d.appspot.com",
+            messagingSenderId: "680602350619",
+            appId: "1:680602350619:web:e29abb8ba2bda71b7cf4be",
+            measurementId: "G-SZ417CRZ1N"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 
 </body>
 
