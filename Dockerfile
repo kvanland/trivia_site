@@ -8,11 +8,11 @@ WORKDIR /app
 # where available (npm@5+)
 COPY package.json /app
 
-RUN yarn
+RUN npm install
 
 # Bundle app source
 COPY . /app
 
 EXPOSE 3000
 
-CMD node app.js
+CMD node public/app.js
