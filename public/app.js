@@ -167,12 +167,12 @@ var host = io.of('/host').on('connection', function (socket) {
                 const game = result.data();
                 socket.emit('nextQuestion', game['questions'][++game['questionPlace']]);
                 join.to(code).emit('nextQuestion');
-
                 // When the questions have been exhausted request more from api
                 if (game['questionPlace'] == 19) {
                     game['questionPlace'] = -1;
                     fetchQuestions(function (gameQuestions) {
                         game['questions'] = gameQuestions;
+                        db.collection('games').doc(result.id).update({ questions: gameQuestions });
                         if (gameQuestions === null) {
                             socket.emit('host reject', 'Unable to gather questions right now try again later!');
                         }
