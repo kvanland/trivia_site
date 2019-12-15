@@ -125,7 +125,7 @@ var host = io.of('/host').on('connection', function (socket) {
                 join.to(code).emit('changeScore', {
                     'username': username,
                     'score': players[username],
-                    'increment': true
+                    'increment': false
                 });
 
             })
