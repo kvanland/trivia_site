@@ -54,6 +54,8 @@ $(function () {
         });
         $('#current-question').html(question['q']);
         $('#current-answer').html(question['a']);
+        $('#reveal-question-btn').removeClass('disabled');
+        $('#reveal-answer-btn').removeClass('disabled');
     });
 
     /**
@@ -140,7 +142,6 @@ $(function () {
      */
     $('#next-btn').click(function () {
         socket.emit('nextQuestion', code);
-        socket.emit('resetBuzzIn', code);
     });
 
     /**
@@ -152,6 +153,8 @@ $(function () {
             code: code,
             question: $('#current-question').html()
         });
+        socket.emit('resetBuzzIn', code);
+        $('#reveal-question-btn').addClass('disabled');
     });
 
     /**
@@ -163,13 +166,8 @@ $(function () {
             code : code,
             answer: $('#current-answer').html()
         });
-    });
-
-    /**
-     * Function that sends a request to the server to reset the buzz ins
-     */
-    $('#reset-buzz-btn').click(function () {
         socket.emit('resetBuzzIn', code);
+        $('#reveal-answer-btn').addClass('disabled');
     });
 
     /**

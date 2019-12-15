@@ -56,6 +56,7 @@ $(function () {
     socket.on('incomingQuestion', function (question) {
         show_alert('Question Revealed', 2500, $('#join-alert'), priorities.INFO);
         $('#current-question').html(question);
+        $('#buzz-btn').removeClass('disabled');
     });
 
     /**
@@ -65,6 +66,7 @@ $(function () {
     socket.on('incomingAnswer', function (answer) {
         show_alert('Answer Revealed', 2500, $('#join-alert'), priorities.INFO);
         $('#current-answer').html(answer);
+        $('#buzz-btn').addClass('disabled');
     });
 
     /**
@@ -103,7 +105,6 @@ $(function () {
             $(row).find('.buzz-place').html('');
         });
         show_alert('Buzzers have been cleared', 2500, $('#join-alert'), priorities.INFO);
-        $('#buzz-btn').addClass('btn-danger').removeClass('btn-light');
     });
 
     /**
@@ -180,7 +181,7 @@ $(function () {
             'username': username,
             'code': code
         });
-        $('#buzz-btn').removeClass('btn-danger').addClass('btn-light');
+        $('#buzz-btn').addClass('disabled');
     });
 
     /**

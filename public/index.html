@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Trivia Bois</title>
+    <title>Express Trivia</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -24,7 +24,7 @@
         <div id="init-container" class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="display-1 text-center">Trivia</h1>
+                    <h1 class="display-1 text-center">Express Trivia</h1>
                 </div>
             </div>
             <div id="login-alert" class="alert alert-dismissible fade" role="alert">
@@ -68,20 +68,20 @@
                 <h4 class="display-4">Hosting</h4>
             </div>
             <div class="row">
-                <ol class="h4">
+                <ol class="lead">
                     <li>
-                        <h4 class="h4">
+                        <p>
                             You'll be given a 5 digit game code at the top of the page. Share it with everyone who wants
                             to play!
-                        </h4>
+                        </p>
                         <h5 class="h5"> Example: </h5>
                         <h4 class="display-4"> Game Code: 12345 </h4>
                     </li>
                     <li>
-                        <h4 class="h4">
+                        <p>
                             Once players have joined you'll see them in the table with their name, score, buzz-in order,
                             and buttons to increase or decrease their scores.
-                        </h4>
+                        </p>
                         <h5 class="h5"> Example: </h5>
                         <div class="table-responsive">
                             <table id="host-table" class="table">
@@ -107,17 +107,46 @@
                         </div>
                     </li>
                     <li>
-                        <h4 class="h4">
-                            You'll have 4 buttons on the bottom of the screen. The first is to reveal the question to
-                            the people are playing. The second is to reveal the answer to the question. The third is to
-                            request a new question from the game. The fourth and last button resets the buzz ins from
-                            the players.
-                        </h4>
+                        <p>
+                            You'll have 3 buttons on the bottom of the screen. The first is to
+                            request a new question from the game. The second is to reveal the question to
+                            the people are playing. The third is to reveal the answer to the question.
+                        </p>
                     </li>
                 </ol>
             </div>
             <div class="row">
                 <h4 class="display-4">Playing</h4>
+            </div>
+            <div class="row">
+                <ol class="lead">
+                    <li>
+                        <p>
+                            You'll need to obtain a game code from someone hosting a game.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Then you'll choose a username and try to join the game. If your username is acceptable and
+                            the game code provided exists then you'll join the game!
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Once in you'll see that the current question and answer are hidden by the host of the game.
+                            When the host chooses to reveal the question your buzz in button will be enabled and you'll
+                            have to race the other players to buzz in to get a chance to answer.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The host can choose to the rules of the game but generally wrong answers will subtract a
+                            point from a player's score and correct answers will add a point. If you don't choose to
+                            answer by not buzzing or someone answers correctly before you then your score should not
+                            change.
+                        </p>
+                    </li>
+                </ol>
             </div>
         </div>
     </div>
