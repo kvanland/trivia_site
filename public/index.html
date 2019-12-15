@@ -17,9 +17,13 @@
     crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script type="application/javascript" src="/index.js"></script>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 <body>
+    <div class="custom-control custom-switch text-center">
+        <input type="checkbox" class="custom-control-input" id="dark-switch">
+        <label class="custom-control-label" for="dark-switch"><i class="fas fa-moon"></i></label>
+    </div>
     <div style="height: 85vh" class="block">
         <div id="init-container" class="container">
             <div class="row">
@@ -51,10 +55,8 @@
             <div class="row">
                 <div class="col-12">
                     <div style="text-align:center;">
-                        <a href="#how-to-play-container" style="color:black">
-                            <i style="font-size: 50px;" class="material-icons">
-                                keyboard_arrow_down
-                            </i>
+                        <a id="how-to-play-link" href="#how-to-play-container" style="color:black">
+                            <i class="fas fa-arrow-down"></i>
                         </a>
                     </div>
                 </div>

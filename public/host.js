@@ -54,8 +54,8 @@ $(function () {
         });
         $('#current-question').html(question['q']);
         $('#current-answer').html(question['a']);
-        $('#reveal-question-btn').removeClass('disabled');
-        $('#reveal-answer-btn').removeClass('disabled');
+        $('#reveal-question-btn').prop('disabled', false);
+        $('#reveal-answer-btn').prop('disabled', true);
     });
 
     /**
@@ -63,6 +63,7 @@ $(function () {
      */
     socket.on('incomingQuestion', function () {
         show_alert('Question Revealed', 2500, $('#host-alert'), priorities.SUCCESS);
+        
     });
 
     /**
@@ -154,7 +155,8 @@ $(function () {
             question: $('#current-question').html()
         });
         socket.emit('resetBuzzIn', code);
-        $('#reveal-question-btn').addClass('disabled');
+        $('#reveal-question-btn').prop('disabled', true);
+        $('#reveal-answer-btn').prop('disabled', false);
     });
 
     /**
@@ -167,7 +169,7 @@ $(function () {
             answer: $('#current-answer').html()
         });
         socket.emit('resetBuzzIn', code);
-        $('#reveal-answer-btn').addClass('disabled');
+        $('#reveal-answer-btn').prop('disabled', true);
     });
 
     /**
@@ -175,6 +177,33 @@ $(function () {
      */
     $('#end-game-btn').click(function () {
         window.location.href = ('/');
+    });
+
+    /**
+     * Toggles dark mode
+     */
+    $('#dark-switch').click(function() {
+        if($('#dark-switch').is(':checked')) {
+            $('body').addClass("bg-dark");
+            $('body').addClass("text-white");
+            $('tr').addClass("text-white");
+            $('#question-div').removeClass('bg-dark');
+            $('#answer-div').removeClass('bg-dark');
+            $('#question-div').addClass('bg-secondary');
+            $('#answer-div').addClass('bg-secondary');
+            $('thead').removeClass('thead-dark');
+            $('thead').addClass('thead-light');
+        } else {
+            $('body').removeClass("bg-dark");
+            $('body').removeClass("text-white");
+            $('tr').removeClass("text-white");
+            $('#question-div').addClass('bg-dark');
+            $('#answer-div').addClass('bg-dark');
+            $('#question-div').removeClass('bg-secondary');
+            $('#answer-div').removeClass('bg-secondary');
+            $('thead').addClass('thead-dark');
+            $('thead').removeClass('thead-light');
+        }
     });
 
 });

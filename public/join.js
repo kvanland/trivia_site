@@ -56,7 +56,7 @@ $(function () {
     socket.on('incomingQuestion', function (question) {
         show_alert('Question Revealed', 2500, $('#join-alert'), priorities.INFO);
         $('#current-question').html(question);
-        $('#buzz-btn').removeClass('disabled');
+        $('#buzz-btn').prop('disabled', false);
     });
 
     /**
@@ -66,7 +66,7 @@ $(function () {
     socket.on('incomingAnswer', function (answer) {
         show_alert('Answer Revealed', 2500, $('#join-alert'), priorities.INFO);
         $('#current-answer').html(answer);
-        $('#buzz-btn').addClass('disabled');
+        $('#buzz-btn').prop('disabled', true);
     });
 
     /**
@@ -181,7 +181,7 @@ $(function () {
             'username': username,
             'code': code
         });
-        $('#buzz-btn').addClass('disabled');
+        $('#buzz-btn').prop('disabled', true);
     });
 
     /**
@@ -205,6 +205,32 @@ $(function () {
         }
     }
 
+    /**
+     * Toggles dark mode
+     */
+    $('#dark-switch').click(function() {
+        if($('#dark-switch').is(':checked')) {
+            $('body').addClass("bg-dark");
+            $('body').addClass("text-white");
+            $('tr').addClass("text-white");
+            $('#question-answer-div').removeClass('bg-dark');
+            $('#score-div').removeClass('bg-dark');
+            $('#question-answer-div').addClass('bg-secondary');
+            $('#score-div').addClass('bg-secondary');
+            $('thead').removeClass('thead-dark');
+            $('thead').addClass('thead-light');
+        } else {
+            $('body').removeClass("bg-dark");
+            $('body').removeClass("text-white");
+            $('tr').removeClass("text-white");
+            $('#question-answer-div').removeClass('bg-secondary');
+            $('#score-div').removeClass('bg-secondary');
+            $('#question-answer-div').addClass('bg-dark');
+            $('#score-div').addClass('bg-dark');
+            $('thead').addClass('thead-dark');
+            $('thead').removeClass('thead-light');
+        }
+    });
 
 });
 
