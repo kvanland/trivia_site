@@ -210,11 +210,11 @@ $(function () {
      * Binds a,s,d to next question, reveal question, reveal answer
      */
     $(document).on('keypress', function(e){
-        if (e.which == 65) { // a
+        if (e.key == 'a') {
             $('#next-btn').click();
-        } else if (e.which == 83) { // s
+        } else if (e.key == 's') {
             $('#reveal-question-btn').click();
-        } else if (e.which == 68) { // d
+        } else if (e.key == 'd') {
             $('#reveal-answer-btn').click();
         }
     });
