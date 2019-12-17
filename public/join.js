@@ -232,6 +232,15 @@ $(function () {
         }
     });
 
+    /**
+     * Binds the space bar to the buzz-btn
+     */
+    $(document).on('keypress' ,function(e){
+        if(e.which == 32) {
+            $('#buzz-btn').click();
+        }
+    });
+
 });
 
 let priorities = {
