@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "Site to hold trivia night",
     "dependencies": {
-        "express": "^4.16.4",
+        "express": "^4.17.3",
         "firebase": "^7.2.3",
         "firebase-admin": "^8.7.0",
         "firebase-tools": "^7.6.2",
